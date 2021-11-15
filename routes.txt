@@ -1,0 +1,12 @@
+
+
+@Roles
+
+GET - getAll() - 
+GET - getOne() -
+POST - insert() -
+POST - update() -
+POST - switchStatus() -
+GET - remove() -
+
+@Users

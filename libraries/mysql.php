@@ -1,7 +1,8 @@
 <?php
 
 //Realiza el CRUD hacia nuestra BD
-class mysql extends connectDB{
+class mysql extends connectDB
+{
     private $connect;
     private $strquery;
     private $arrValues;
@@ -12,31 +13,19 @@ class mysql extends connectDB{
         $this->connect = $this->connect->connect();
     }
 
-    //Insertar un registro
-    public function insert(string $query, array $arrValues){
-        $this->strquery = $query;
-        $this->arrValues = $arrValues;
-        $insert = $this->connect->prepare($this->strquery);
-        $resInsert = $insert->execute($this->arrValues);
-        if($resInsert){
-            $lastInsert = $this->connect->lastInsertId();
-        }else{
-            $lastInsert = 0;
-        }
-        return $lastInsert;
-    }
-
     //Buscar un registro
-    public function select(string $query){
+    public function select(string $query)
+    {
         $this->strquery = $query;
         $result = $this->connect->prepare($this->strquery);
         $result->execute();
         $data = $result->fetch(PDO::FETCH_ASSOC);
         return $data;
     }
-    
+
     //Devolver todos los registros
-    public function select_all(string $query){
+    public function select_all(string $query)
+    {
         $this->strquery = $query;
         $result = $this->connect->prepare($this->strquery);
         $result->execute();
@@ -44,8 +33,25 @@ class mysql extends connectDB{
         return $data;
     }
 
+    //Insertar un registro
+    public function insert(string $query, array $arrValues)
+    {
+        $this->strquery = $query;
+        $this->arrValues = $arrValues;
+        $insert = $this->connect->prepare($this->strquery);
+        $resInsert = $insert->execute($this->arrValues);
+        if ($resInsert) {
+            $lastInsert = $this->connect->lastInsertId();
+            $arrRequest = array($resInsert, $lastInsert);
+        } else {
+            $arrRequest = array($resInsert);
+        }
+        return $arrRequest;
+    }
+
     //Actualizar registros
-    public function update(string $query, array $arrValues){
+    public function update(string $query, array $arrValues)
+    {
         $this->strquery = $query;
         $this->arrValues = $arrValues;
         $update = $this->connect->prepare($this->strquery);
@@ -54,13 +60,11 @@ class mysql extends connectDB{
     }
 
     //Eliminar un registro
-    public function delete(string $query){
+    public function delete(string $query)
+    {
         $this->strquery = $query;
         $result = $this->connect->prepare($this->strquery);
         $del = $result->execute();
         return $del;
     }
-
 }
-
-?>
